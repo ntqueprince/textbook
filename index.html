@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CVang Notebook</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+    <div id="particles"></div>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-book-open"></i>
+                    <h1>CVang Notebook</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="auth-buttons" id="authButtons">
+                        <button class="btn btn-outline" id="loginBtn">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                        <button class="btn btn-primary" id="signupBtn">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </button>
+                    </div>
+                    <div class="profile-dropdown" id="profileDropdown" style="display: none;">
+                        <button class="profile-btn" id="profileBtn">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <div class="dropdown-content" id="dropdownContent">
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <h3 id="userName">John Doe</h3>
+                                    <p id="userEmail">john@example.com</p>
+                                </div>
+                            </div>
+                            <div class="dropdown-actions">
+                                <a href="#" class="dropdown-action" id="settingsBtn">
+                                    <i class="fas fa-cog"></i> Settings
+                                </a>
+                                <a href="#" class="dropdown-action" id="editProfileBtn">
+                                    <i class="fas fa-user-edit"></i> Edit Profile
+                                </a>
+                                <a href="#" class="dropdown-action" id="dropdownLogoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="auth-section" id="authSection">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2 id="authTitle">Welcome Back!</h2>
+                <p id="authSubtitle">Please sign in to access your notebook</p>
+            </div>
+
+            <form id="authForm">
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="Enter your email">
+                </div>
+                <div class="form-group" id="passwordGroup">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Enter your password">
+                </div>
+                <div class="form-group" id="confirmPasswordGroup" style="display: none;">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" class="form-control"
+                        placeholder="Confirm your password">
+                </div>
+                <div class="form-group" id="verificationGroup" style="display: none;">
+                    <label for="verificationCode">Verification Code</label>
+                    <input type="text" id="verificationCode" class="form-control" placeholder="Enter verification code">
+                </div>
+
+                <div class="forgot-password-link" id="forgotPasswordLink">
+                    <a href="#" id="forgotLink">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="authSubmit" style="width: 100%;">
+                    Sign In
+                </button>
+            </form>
+            <div class="form-footer">
+                <p id="authToggle">Don't have an account? <a href="#" id="toggleAuthLink">Sign Up</a></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="notes-section container" id="notesSection">
+        <div class="welcome-message">
+            <h2>Your Personal Notebook</h2>
+            <p>Create, organize, and manage your notes, tasks, and routines all in one place.</p>
+        </div>
+
+        <div class="top-add-wrapper">
+            <button id="addNoteTopBtn" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add New Note
+            </button>
+        </div>
+
+        <div class="notes-container" id="notesContainer">
+            <div class="note-card add-note" id="addNoteBtn">
+                <i class="fas fa-plus-circle"></i>
+                <p>Add New Note</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="noteModal">
+        <div class="modal-content" id="modalContent">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <div class="modal-header">
+                <h3 id="modalTitle">Create New Note</h3>
+                <button class="fullscreen-toggle" id="fullscreenToggle">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group-modal">
+                    <label for="noteTitle">Title</label>
+                    <input type="text" id="noteTitle" class="modal-title-input" placeholder="Note title">
+                </div>
+                <textarea id="noteContent" class="modal-content-textarea"
+                    placeholder="Write your note here..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="action-btn delete-btn" id="cancelNoteBtn">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button type="submit" class="action-btn edit-btn" id="saveNoteBtn">
+                    <i class="fas fa-save"></i> Save Note
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content settings-modal-content">
+            <button class="close-modal" id="closeSettingsModal">&times;</button>
+            <div class="modal-header">
+                <h3>Account Settings</h3>
+            </div>
+            <div class="settings-tabs">
+                <button class="settings-tab active" data-tab="email">
+                    <i class="fas fa-envelope"></i> Change Email
+                </button>
+                <button class="settings-tab" data-tab="password">
+                    <i class="fas fa-lock"></i> Change Password
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Email Change Form -->
+                <form id="changeEmailForm" class="settings-form active">
+                    <div class="form-group-modal">
+                        <label>Current Email</label>
+                        <input type="email" id="currentEmailDisplay" class="form-control" disabled>
+                    </div>
+                    <div class="form-group-modal">
+                        <label for="newEmail">New Email</label>
+                        <input type="email" id="newEmail" class="form-control" placeholder="Enter new email">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
+                        <i class="fas fa-envelope"></i> Update Email
+                    </button>
+                    <p class="settings-note">
+                        <i class="fas fa-info-circle"></i> A confirmation email will be sent to your new address.
+                    </p>
+                </form>
+
+                <!-- Password Change Form -->
+                <form id="changePasswordForm" class="settings-form">
+                    <div class="form-group-modal">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword" class="form-control"
+                            placeholder="Enter current password">
+                    </div>
+                    <div class="form-group-modal">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" class="form-control" placeholder="Enter new password">
+                    </div>
+                    <div class="form-group-modal">
+                        <label for="confirmNewPassword">Confirm New Password</label>
+                        <input type="password" id="confirmNewPassword" class="form-control"
+                            placeholder="Confirm new password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
+                        <i class="fas fa-lock"></i> Update Password
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Operation completed successfully!</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
