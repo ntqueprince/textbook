@@ -7,7 +7,10 @@
     <title>CVang Notebook</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Firebase SDKs (compat mode) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 </head>
 
 <body>
@@ -88,10 +91,6 @@
                     <label for="confirmPassword">Confirm Password</label>
                     <input type="password" id="confirmPassword" class="form-control"
                         placeholder="Confirm your password">
-                </div>
-                <div class="form-group" id="verificationGroup" style="display: none;">
-                    <label for="verificationCode">Verification Code</label>
-                    <input type="text" id="verificationCode" class="form-control" placeholder="Enter verification code">
                 </div>
 
                 <div class="forgot-password-link" id="forgotPasswordLink">
@@ -182,11 +181,16 @@
                         <label for="newEmail">New Email</label>
                         <input type="email" id="newEmail" class="form-control" placeholder="Enter new email">
                     </div>
+                    <div class="form-group-modal">
+                        <label for="emailReauthPassword">Current Password (required)</label>
+                        <input type="password" id="emailReauthPassword" class="form-control"
+                            placeholder="Enter current password to confirm">
+                    </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
                         <i class="fas fa-envelope"></i> Update Email
                     </button>
                     <p class="settings-note">
-                        <i class="fas fa-info-circle"></i> A confirmation email will be sent to your new address.
+                        <i class="fas fa-info-circle"></i> You'll need to verify your new email address.
                     </p>
                 </form>
 
